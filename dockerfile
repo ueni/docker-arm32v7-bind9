@@ -1,6 +1,6 @@
 FROM arm32v7/alpine:3.11
 
-LABEL maintainer="ueni"
+LABEL maintainer="ueniueni, ueni"
 
 ARG VERSION_BIND=9.14.8-r5
 ENV VERSION=1.0.0
@@ -17,6 +17,3 @@ EXPOSE 53 53/udp 953 8053
 
 COPY entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]
-
-
-
