@@ -4,7 +4,9 @@ LABEL maintainer="ueniueni, ueni"
 
 ENV VERSION=1.0.0
 
-RUN apk --update add bind 
+COPY qemu-arm-static /usr/bin
+
+RUN apk --update --no-cache add bind 
 RUN mkdir -m 0755 -p /var/run/named && chown -R root:named /var/run/named
 
 VOLUME ["/etc/bind"]
