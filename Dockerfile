@@ -6,7 +6,7 @@ ENV VERSION=1.0.0
 
 COPY qemu-arm-static /usr/bin
 
-RUN apk --update --no-cache add bind 
+RUN apk --update --no-cache add bind bind-tools bind-libs 
 RUN mkdir -m 0755 -p /var/run/named && chown -R root:named /var/run/named
 
 VOLUME ["/etc/bind"]
