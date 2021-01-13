@@ -1,13 +1,17 @@
-FROM arm32v7/alpine:latest
+FROM ubuntu:20.04
 
 LABEL maintainer="ueniueni, ueni"
 
-ENV VERSION=1.0.0
+ARG ARG_VERSION=1.0.0.0-dev
+ENV VERSION=$ARG_VERSION
 
-COPY qemu-arm-static /usr/bin
-
-RUN apk --update --no-cache add bind bind-tools bind-libs 
-RUN mkdir -m 0755 -p /var/run/named && chown -R root:named /var/run/named
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get autoremove -y && \
+    apt-get install -y \
+        bind9 \
+        bind9-utils && \
+    apt-get clean;
 
 VOLUME ["/etc/bind"]
 VOLUME ["/var/cache/bind"]

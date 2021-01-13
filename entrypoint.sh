@@ -19,6 +19,13 @@ NAMED_UID_ACTUAL=$(id -u ${USER})
 NAMED_GID_ACTUAL=$(id -g ${GROUP})
 
 #
+# Display Version
+#
+echo "versions"
+echo "=============="
+echo "  image:           $VERSION"
+
+#
 # Display settings on standard out.
 #
 echo "named settings"
