@@ -16,8 +16,10 @@ RUN apt-get update && \
 VOLUME ["/etc/bind"]
 VOLUME ["/var/cache/bind"]
 VOLUME ["/var/log/named"]
+VOLUME ["/var/usr/share/geoip"]
+VOLUME ["/var/bind"]
 
-EXPOSE 53 53/udp 953 8053
+EXPOSE 53/udp
 
 COPY entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]
