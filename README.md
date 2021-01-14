@@ -14,4 +14,4 @@ Finally, release the image:
 
 Run image
    
-    make deploy
+    make run

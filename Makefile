@@ -19,9 +19,8 @@ release: tag
 build:
 	docker build -t $(IMAGE) .
 
-.PHONY: deploy
-deploy:
+.PHONY: run
+run: build
 	@docker run \
-		--it \
-		--restart unless-stopped \
-		$(IMAGE):latest /bin/sh
+		--rm \
+		$(IMAGE):latest
