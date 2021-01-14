@@ -1,0 +1,47 @@
+# This is a basic workflow to help you get started with Actions
+
+name: dockerHub CI
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  schedule:
+    - cron: '0 1 * * SUN'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Import assembly.info
+        uses: falti/dotenv-action@v0.2.5
+        id: assembly
+        with:
+         path: assembly.info
+
+      - name: Install buildx
+        id: buildx
+        uses: crazy-max/ghaction-docker-buildx@v1
+
+      - name: Login to docker hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build the image and push
+        id: build
+        env:
+         VERSION: ${{steps.assembly.outputs.version_major}}.${{steps.assembly.outputs.version_feature}}.${{steps.assembly.outputs.version_bugfix}}.${{github.run_number}}
+        run: |
+          docker buildx build --push \
+            --build-arg VERSION=${VERSION} \
+            --tag ${{secrets.DOCKER_USERNAME}}/docker-bind9:latest \
+            --tag ${{secrets.DOCKER_USERNAME}}/docker-bind9:${VERSION} \
+            --platform linux/amd64,linux/arm/v7,linux/arm64 .
