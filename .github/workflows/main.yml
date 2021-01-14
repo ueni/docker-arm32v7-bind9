@@ -38,10 +38,14 @@ jobs:
       - name: Build the image and push
         id: build
         env:
+         VERSION_SIMPLE: ${{steps.assembly.outputs.version_major}}.${{steps.assembly.outputs.version_feature}}
+         VERSION_WITHOUT_BUILD: ${{steps.assembly.outputs.version_major}}.${{steps.assembly.outputs.version_feature}}.${{steps.assembly.outputs.version_bugfix}}
          VERSION: ${{steps.assembly.outputs.version_major}}.${{steps.assembly.outputs.version_feature}}.${{steps.assembly.outputs.version_bugfix}}.${{github.run_number}}
         run: |
           docker buildx build --push \
-            --build-arg VERSION=${VERSION} \
+            --build-arg ARG_VERSION=${VERSION} \
             --tag ${{secrets.DOCKER_USERNAME}}/docker-bind9:latest \
             --tag ${{secrets.DOCKER_USERNAME}}/docker-bind9:${VERSION} \
+            --tag ${{secrets.DOCKER_USERNAME}}/docker-bind9:${VERSION_WITHOUT_BUILD} \
+            --tag ${{secrets.DOCKER_USERNAME}}/docker-bind9:${VERSION_SIMPLE} \
             --platform linux/amd64,linux/arm/v7,linux/arm64 .
